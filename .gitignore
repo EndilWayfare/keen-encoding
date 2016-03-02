@@ -1,3 +1,6 @@
+# ENDIL: Visual Studio folder (solution for debugging)
+VisualStudio/**
+
 # Object files
 *.o
 *.ko
