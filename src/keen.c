@@ -4,48 +4,45 @@
 * 
 * Purpose: The primary file for execution, containing the main function
 * 
-* Developer: Philip Ormand
+* Creator: Philip Ormand
 *
 * Date Updated: 2016-03-02
 *
 ***********************************************************************/
 
-#include <ctype.h>
 #include <stddef.h>
 #include <stdio.h>
 
-#define BUFFER_SIZE 265
+#include "keen_codes.h"
+#include "keen_io.h"
 
 int main()
 {
      char inputString[BUFFER_SIZE] = { 0 },
-          *inputStringEnd = inputString + BUFFER_SIZE,
-          outputString[BUFFER_SIZE] = { 0 },
-          *readHead = inputString,
-          *writeHead = outputString;
+          outputString[BUFFER_SIZE] = { 0 };
      int ch = 0;
 
-     while ( readHead != inputStringEnd - 1 && (ch = getchar()) >= 0 && ch != '\n' )
-     {
-          *readHead++ = (char) ch;
-     }
-
-     if (readHead == inputStringEnd - 1)
-     {
-          *readHead = 0;
-     }
+     puts("Please enter a messge to encode: ");
+     readString(inputString, inputString + BUFFER_SIZE);
 
      puts("\nInput Message:\n");
      puts(inputString);
 
-     for (readHead = inputString; *readHead != 0; ++readHead, ++writeHead)
-     {
-          *writeHead = toupper(*readHead);
-     }
-     *++writeHead = 0;
+     int length = calcLengthAllCaps(inputString);
 
-     puts("\n\nOutput Message:\n");
-     puts(outputString);
+     // validation block for encoding. Make sure output buffer is large enough
+     if (length <= sizeof(outputString))
+     {
+          encodeAllCaps(inputString, outputString);
+
+          puts("\n\nOutput Message:\n");
+          puts(outputString);
+     }
+     else
+     {
+          fputs("\nERROR: Not enough space to hold encoded message.", stderr);
+     }
+     
 
      return 0;
 }
