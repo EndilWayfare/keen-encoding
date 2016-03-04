@@ -20,7 +20,7 @@ int main()
 {
      char inputString[BUFFER_SIZE] = { 0 },
           outputString[BUFFER_SIZE] = { 0 };
-     int ch = 0;
+     Code *code = &allCaps;
 
      puts("Please enter a messge to encode: ");
      readString(inputString, inputString + BUFFER_SIZE);
@@ -28,12 +28,14 @@ int main()
      puts("\nInput Message:\n");
      puts(inputString);
 
-     int length = calcLengthAllCaps(inputString);
+     printf("\n\nCode to use: '%s'\n", code->name);
+
+     int encodedLength = code->calcLength(inputString);
 
      // validation block for encoding. Make sure output buffer is large enough
-     if (length <= sizeof(outputString))
+     if (encodedLength <= sizeof(outputString))
      {
-          encodeAllCaps(inputString, outputString);
+          code->encode(inputString, outputString);
 
           puts("\n\nOutput Message:\n");
           puts(outputString);

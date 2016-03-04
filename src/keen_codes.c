@@ -4,24 +4,26 @@
 #include <string.h>
 #include "keen_codes.h"
 
-int encodeAllCaps(const char * in, char * out)
+Code allCaps = { "All Caps", "allcaps", encodeAllCaps, calcLengthAllCaps };
+
+int encodeAllCaps(const char * message, char * out)
 {
      const char *readHead;
      char *writeHead;
      
-     for (readHead = in, writeHead = out;
+     for (readHead = message, writeHead = out;
      *readHead != 0; ++readHead, ++writeHead)
      {
           *writeHead = toupper(*readHead);
      }
      *++writeHead = 0;
      
-     return 0;
+     return writeHead - out;
 }
 
-int calcLengthAllCaps(const char * source)
+int calcLengthAllCaps(const char * message)
 {
      // strlen doesn't include the null terminator.
      // make sure there's at least one more space.
-     return strlen(source) + 1; 
+     return strlen(message) + 1;
 }
