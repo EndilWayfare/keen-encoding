@@ -1,6 +1,10 @@
 #ifndef KEEN_CODES_H
+#define KEEN_CODES_H
 
 #pragma once
+
+#include <stdlib.h>
+#include <string.h>
 
 #define ALPHABET_LENGTH 26
 
@@ -16,6 +20,15 @@ struct Code
      // add 'description' member at some point?
 };
 typedef struct Code Code;
+
+/**
+ * Compares two Code struct pointers to determine natural ordering.
+ * Intended primarily as an argument for qsort.
+ * 
+ * @param code1 Pointer to one Code struct instance
+ * @param code2 Poniter to another Code struct instance
+ */
+int compareCodePtrs(const void *code1, const void *code2);
 
 /**
 * Example Code struct. Used as default code for now, probably until

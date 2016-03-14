@@ -4,6 +4,23 @@
 #include <string.h>
 #include "keen_codes.h"
 
+int compareCodePtrs(const void *code1, const void *code2)
+{
+     // compare the string values of the code handles
+     // those are the 'unique identifiers' most like a primary key
+     int cmp = strcmp( (*(Code **)code1)->handle, (*(Code **)code2)->handle );
+
+     if (cmp == 0)
+     {
+          fputs("Two compared Code structs have identical handles."
+                "This is probably wrong.", stderr);
+     }
+
+     return cmp;
+}
+
+
+// 'All Caps' - not much of a code, but a pretty similar transformation
 Code allCaps = { "All Caps", "allcaps", encodeAllCaps, calcLengthAllCaps };
 
 int encodeAllCaps(const char * message, char * out)
