@@ -3,12 +3,35 @@
 
 #pragma once
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define ALPHABET_LENGTH 26
 
-typedef int (*Encoder) (const char *message, char *out);
+enum CodeMode
+{
+     ENCODE = 0,  // 0, so 'ENCODE' is default behavior
+     DECODE,
+};
+typedef enum CodeMode CodeMode;
+
+struct CodeParams
+{
+     union
+     {
+          int i;
+          char* str; /**< encoders that use a string key should pass source message with
+                          no change if they are passed the nullptr */
+     } key;
+     CodeMode mode;
+};
+typedef struct CodeParams CodeParams;
+
+// initializer for default CodeParams struct. No key, mode set to ENCODE.
+#define CODE_PARAMS_DEFAULT {0}  // usage: CodeParams myParams = CODE_PARAMS_DEFAULT
+
+typedef int (*Encoder) (const char *message, char *out, CodeParams *params);
 typedef int(*LengthCalculator) (const char *message);
 
 struct Code
@@ -26,37 +49,22 @@ typedef struct Code Code;
  * Intended primarily as an argument for qsort.
  * 
  * @param code1 Pointer to one Code struct instance
- * @param code2 Poniter to another Code struct instance
+ * @param code2 Pointer to another Code struct instance
  */
 int compareCodePtrs(const void *code1, const void *code2);
 
 /**
-* Example Code struct. Used as default code for now, probably until
-* I implement the roll cipher.
+* Example Code struct. Used as default code for testing. It's silly, and will pro
 */
 extern Code allCaps;
 
 /**
-* Example encoder, with compatible signature, used for testing
-*
-* Like most encoders, DOES NOT CHECK LENGTH OF OUTPUT BUFFER
-* It is the responsibility of the caller to verify adequate capacity.
-* Use 'calcLengthAllCaps' for convenience.
-* 
-* @param in The string containing message to be encoded
-* @param out The destination buffer for encoded message
-* @return The number of characters written to 'out', NOT including null
-*/
-int encodeAllCaps(const char *message, char *out);
-
-/**
-* Calculates necessary space to store result of 'AllCaps' code
-* given a certain English input buffer.
-* Includes space for the null terminator.
-*
-* @param source The string containing the message to be encoded
-* @return The number of chars needed to store encoded message
-*/
-int calcLengthAllCaps(const char *message);
+ * The Ceaser cipher: Simple shift cipher that offsets each message letter by a
+ * certain number of positions to the right in the alphabet. With a shift of 5,
+ * 'A' becomes 'F'. With a shift of -1, 'A' becomes 'Z'.
+ *
+ * https://en.wikipedia.org/wiki/Caesar_cipher
+ */
+extern Code caesar;
 
 #endif // !KEEN_CODES_H
