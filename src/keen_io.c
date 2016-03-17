@@ -1,3 +1,14 @@
+/*============================================================================
+
+  File: keen_io.c
+
+  Purpose: Functions for general-purpose input and output
+
+  Creator: Philip Ormand
+
+  Date Created: 2016-03-04
+
+============================================================================*/
 
 #include <stdio.h>
 #include "keen_io.h"

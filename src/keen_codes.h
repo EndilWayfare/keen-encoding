@@ -11,19 +11,22 @@
 
 enum CodeMode
 {
-     ENCODE = 0,  // 0, so 'ENCODE' is default behavior
+     ENCODE = 0,  /*!< 0, so 'ENCODE' is default behavior */
      DECODE,
 };
 typedef enum CodeMode CodeMode;
 
+union Key
+{
+     int i;
+     char* str; /*!< encoders that use a string key should pass source message with
+                no change if they are passed the nullptr */
+};
+
 struct CodeParams
 {
-     union
-     {
-          int i;
-          char* str; /**< encoders that use a string key should pass source message with
-                          no change if they are passed the nullptr */
-     } key;
+     union Key key;
+     union Key secondaryKey;
      CodeMode mode;
 };
 typedef struct CodeParams CodeParams;
@@ -36,10 +39,10 @@ typedef int(*LengthCalculator) (const char *message);
 
 struct Code
 {
-     const char *name;   /**< "nice name", used for user feedback */
-     const char *handle; /**< code-friendly identifier. The 'slug' */
-     Encoder encode;     /**< pointer to function used to encode message */
-     LengthCalculator calcLength; /**< pointer to function that calculates length of encoded message */
+     const char *name;   /*!< "nice name", used for user feedback */
+     const char *handle; /*!< code-friendly identifier. The 'slug' */
+     Encoder encode;     /*!< pointer to function used to encode message */
+     LengthCalculator calcLength; /*!< pointer to function that calculates length of encoded message */
      // add 'description' member at some point?
 };
 typedef struct Code Code;
@@ -66,5 +69,13 @@ extern Code allCaps;
  * https://en.wikipedia.org/wiki/Caesar_cipher
  */
 extern Code caesar;
+
+/**
+ * The Affine cipher: Shift cipher with two coefficients. The letter to be encoded
+ * is multiplied by the first key and added to the second key. The Caesar cipher can
+ * be thought of as an affine cipher that always has a first key of 0, since it is a
+ * simple additive translation.
+ */
+extern Code affine;
 
 #endif // !KEEN_CODES_H

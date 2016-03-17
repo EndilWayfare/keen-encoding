@@ -1,14 +1,14 @@
-/***********************************************************************
-*
-* File: keen.c
-* 
-* Purpose: The primary file for execution, containing the main function
-* 
-* Creator: Philip Ormand
-*
-* Date Updated: 2016-03-02
-*
-***********************************************************************/
+/*============================================================================
+
+  File: keen.c
+
+  Purpose: The primary file for execution, containing the main function
+
+  Creator: Philip Ormand
+
+  Date Created: 2016-03-02
+
+============================================================================*/
 
 #include <stddef.h>
 #include <stdio.h>
@@ -20,14 +20,17 @@ int main()
 {
      char inputString[BUFFER_SIZE] = { 0 },
           outputString[BUFFER_SIZE] = { 0 };
-     Code *code = &caesar;
+     Code *code = &affine;
      CodeParams params = CODE_PARAMS_DEFAULT;
 
      puts("Please enter a messge to encode: ");
      readString(inputString, inputString + BUFFER_SIZE);
 
-     puts("\nPlease enter an offset shift: ");
+     puts("\nPlease enter the multiplying offset: ");
      scanf(" %d", &params.key.i);
+
+     puts("\nPlease enter the adding offset: ");
+     scanf(" %d", &params.secondaryKey.i);
 
      /*
      puts("\nInput Message:");

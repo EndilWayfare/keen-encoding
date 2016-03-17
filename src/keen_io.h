@@ -18,6 +18,6 @@
  * @return The number of characters read, NOT including the null character.
  *         If there is no space in buffer, returns -1
  */
-int readString(char *buffer, const char * const end);
+int readString(char * const buffer, const char * const end);
 
 #endif // !KEEN_IO_H
